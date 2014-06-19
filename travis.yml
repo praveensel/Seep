@@ -18,8 +18,8 @@ before_script:
   - ./scripts/wait_for_browser_provider.sh
 
 script:
-  - ./scripts/testserver.sh
-  - ./scripts/testonsauce.sh
+  - .protractor config.js
+  
 
 after_script:
   - ./scripts/print_logs.sh
