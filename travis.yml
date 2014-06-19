@@ -1,0 +1,25 @@
+﻿language: node_js
+node_js:
+  - "0.10"
+
+env:
+  matrix:
+    - JOB=smoke
+    - JOB=suite
+  global:
+    - SAUCE_USERNAME=praveenk82
+    - SAUCE_ACCESS_KEY=3fb2157e-53e3-4c5d-8cf1-0b8131a08d74
+    - LOGS_DIR=/tmp/protractor-build/logs
+    - BROWSER_PROVIDER_READY_FILE=/tmp/sauce-connect-ready
+
+before_script:
+  - mkdir -p $LOGS_DIR
+  - ./scripts/sauce_connect_setup.sh
+  - ./scripts/wait_for_browser_provider.sh
+
+script:
+  - ./scripts/testserver.sh
+  - ./scripts/testonsauce.sh
+
+after_script:
+  - ./scripts/print_logs.sh
