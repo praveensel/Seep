@@ -1,0 +1,12 @@
+String input = "yourStringHere";
+
+if (input.contains("administrator")) {
+    // Do something for 'administrator'
+    functionForAdministrator();
+} else if (input.contains("remove")) {
+    // Do something for 'remove'
+    functionForRemove();
+} else {
+    // Do something for neither 'administrator' nor 'remove'
+    anotherFunction();
+}
