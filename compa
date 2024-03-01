@@ -44,6 +44,7 @@ public class PaginationValidator {
             } else {
                 // Add the record to the set
                 secondPageRecords.add(recordStr);
+int offset = (row.get("offset") instanceof String) ? Integer.parseInt((String) row.get("offset")) : (int) row.get("offset");
             }
         }
     }
