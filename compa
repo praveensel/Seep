@@ -1,0 +1,50 @@
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class PaginationValidator {
+
+    public static void main(String[] args) {
+        // Sample JSON strings for demonstration purposes
+        String firstPageJson = ""; // JSON string for the first page of results
+        String secondPageJson = ""; // JSON string for the second page of results
+
+        try {
+            JSONArray firstPageData = new JSONObject(firstPageJson).getJSONArray("data");
+            JSONArray secondPageData = new JSONObject(secondPageJson).getJSONArray("data");
+
+            validateNoDuplicates(firstPageData, secondPageData);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void validateNoDuplicates(JSONArray firstPageData, JSONArray secondPageData) {
+        Set<String> firstPageRecords = new HashSet<>();
+        Set<String> secondPageRecords = new HashSet<>();
+
+        // Add records from the first page to the set
+        for (int i = 0; i < firstPageData.length(); i++) {
+            JSONObject record = firstPageData.getJSONObject(i);
+            firstPageRecords.add(record.toString());
+        }
+
+        // Add records from the second page to the set
+        for (int i = 0; i < secondPageData.length(); i++) {
+            JSONObject record = secondPageData.getJSONObject(i);
+            String recordStr = record.toString();
+            
+            // Check if the record already exists in the set (duplicate)
+            if (firstPageRecords.contains(recordStr)) {
+                System.out.println("Duplicate record found on second page: " + recordStr);
+                // Handle the duplicate record (e.g., fail the test)
+            } else {
+                // Add the record to the set
+                secondPageRecords.add(recordStr);
+            }
+        }
+    }
+}
