@@ -1,0 +1,55 @@
+import java.time.Duration;
+import java.time.LocalDateTime;
+
+public class TokenManager {
+    private String token; // Store the current token
+    private LocalDateTime tokenCreationTime; // Store the token creation time
+
+    // Placeholder for the method to generate token
+    public String gen_token() {
+        // Check if a token already exists and is still valid
+        if (token != null && !isTokenExpired(tokenCreationTime)) {
+            return token; // Return the existing token
+        } else {
+            // Generate a new token
+            token = generateNewToken();
+            tokenCreationTime = LocalDateTime.now(); // Set the token creation time
+            return token;
+        }
+    }
+
+    // Placeholder for the method to check if token is expired
+    private boolean isTokenExpired(LocalDateTime tokenCreationTime) {
+        // Get the current time
+        LocalDateTime currentTime = LocalDateTime.now();
+
+        // Calculate the difference between the current time and token creation time
+        Duration duration = Duration.between(tokenCreationTime, currentTime);
+
+        // Check if the duration exceeds the expiration time (30 minutes)
+        return duration.toMinutes() >= 30;
+    }
+
+    // Placeholder for the method to generate a new token
+    private String generateNewToken() {
+        // Your token generation logic here
+        return "your_generated_token";
+    }
+
+    public static void main(String[] args) {
+        TokenManager tokenManager = new TokenManager();
+        String token1 = tokenManager.gen_token();
+        System.out.println("Token 1: " + token1);
+
+        // Simulate waiting for some time (e.g., 20 minutes)
+        // Then generate token again
+        try {
+            Thread.sleep(20 * 60 * 1000); // Sleep for 20 minutes
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        String token2 = tokenManager.gen_token();
+        System.out.println("Token 2: " + token2); // Should be the same as token1 if not expired
+    }
+}
