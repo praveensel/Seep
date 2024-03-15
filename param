@@ -1,0 +1,55 @@
+import cucumber.api.DataTable;
+import cucumber.api.java.en.When;
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+
+import static io.restassured.RestAssured.given;
+
+import java.util.Map;
+
+public class AdminUserInformationStepDefinitions {
+
+    private Response response;
+
+    @When("a request is made with the following parameters:")
+    public void makeRequestWithParameters(DataTable dataTable) {
+        // Convert DataTable to List of Maps
+        List<Map<String, String>> parameterCombinations = dataTable.asMaps(String.class, String.class);
+
+        // Iterate over each combination of parameters
+        for (Map<String, String> parameters : parameterCombinations) {
+            // Construct the request body using the parameters provided in the DataTable
+            Map<String, Object> requestBody = new HashMap<>();
+            
+            // Add GCI if present
+            if (parameters.containsKey("GCI")) {
+                requestBody.put("parameters.gci", parameters.get("GCI"));
+            }
+            
+            // Add Company ID if present
+            if (parameters.containsKey("Company ID")) {
+                requestBody.put("parameters.companyId", parameters.get("Company ID"));
+            }
+            
+            // Add Email Address if present
+            if (parameters.containsKey("Email Address")) {
+                requestBody.put("parameters.emailAddress", parameters.get("Email Address"));
+            }
+            
+            // Add Family GCI if present
+            if (parameters.containsKey("Family GCI")) {
+                requestBody.put("parameters.familyGci", parameters.get("Family GCI"));
+            }
+
+            // Make the API request using the constructed request body
+            response = given()
+                .contentType(ContentType.JSON)
+                .body(requestBody)
+            .when()
+                .post("/api/endpoint"); // Replace "/api/endpoint" with your actual API endpoint
+
+            // Verify the response according to the scenario requirements
+            // Implement your verification logic here
+        }
+    }
+}
