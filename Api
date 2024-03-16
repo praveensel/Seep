@@ -1,0 +1,28 @@
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+import java.util.HashMap;
+import java.util.Map;
+
+import static io.restassured.RestAssured.given;
+
+public class ApiHandler {
+
+    // Common method to make API request
+    public static Response makeApiRequest(String endpoint, Map<String, Object> requestBody, Map<String, String> headers) {
+        // Make the API request using the provided endpoint, request body, and headers
+        return given()
+                .headers(headers)
+                .contentType(ContentType.JSON)
+                .body(requestBody)
+                .when()
+                .post(endpoint);
+    }
+
+    // Common method to set headers
+    public static Map<String, String> getCommonHeaders() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Trace-Id", "your-trace-id-value");
+        headers.put("Authorization", "your-authorization-token");
+        return headers;
+    }
+}
