@@ -1,10 +1,6 @@
 import cucumber.api.DataTable;
 import cucumber.api.java.en.When;
-import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-
-import static io.restassured.RestAssured.given;
-
 import java.util.Map;
 
 public class AdminUserInformationStepDefinitions {
@@ -41,13 +37,9 @@ public class AdminUserInformationStepDefinitions {
                 requestBody.put("parameters.familyGci", parameters.get("Family GCI"));
             }
 
-            // Make the API request using the constructed request body
-            response = given()
-                .contentType(ContentType.JSON)
-                .body(requestBody)
-            .when()
-                .post("/api/endpoint"); // Replace "/api/endpoint" with your actual API endpoint
-
+            // Make the API request
+            response = ApiHandler.makeApiRequest("/api/endpoint", requestBody, ApiHandler.getCommonHeaders());
+            
             // Verify the response according to the scenario requirements
             // Implement your verification logic here
         }
