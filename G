@@ -1,0 +1,75 @@
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.And;
+import org.junit.Assert;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.ArrayList;
+
+public class JsonResponseStepDefinitions {
+
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private JsonNode jsonResponse;
+
+    @Given("I have the following JSON response")
+    public void iHaveTheFollowingJsonResponse(String jsonResponseString) throws IOException {
+        jsonResponse = objectMapper.readTree(jsonResponseString);
+    }
+
+    @And("I validate the JSON node {string} with field {string} should be {string}")
+    public void iValidateTheJsonNodeWithFieldShouldBe(String rootNodePath, String fieldName, String expectedValue) throws IOException {
+        validateJsonNode(jsonResponse, rootNodePath, fieldName, expectedValue);
+    }
+
+    @And("I validate the JSON node {string} with field {string} should contain {string}")
+    public void iValidateTheJsonNodeWithFieldShouldContain(String rootNodePath, String fieldName, String expectedValues) throws IOException {
+        List<String> expectedList = objectMapper.readValue(expectedValues, ArrayList.class);
+        validateJsonNodeContains(jsonResponse, rootNodePath, fieldName, expectedList);
+    }
+
+    public void validateJsonNode(JsonNode rootNode, String rootNodePath, String fieldName, String expectedValue) {
+        JsonNode node = rootNode;
+
+        // Navigate through the JSON tree to the specified root node
+        for (String pathSegment : rootNodePath.split("\\.")) {
+            node = node.path(pathSegment);
+        }
+
+        // Check if node is an array or a single object
+        if (node.isArray()) {
+            boolean idExists = false;
+            for (JsonNode arrayElement : node) {
+                if (arrayElement.path(fieldName).asText().equals(expectedValue)) {
+                    idExists = true;
+                    break;
+                }
+            }
+            Assert.assertTrue(fieldName + " " + expectedValue + " should exist in " + rootNodePath, idExists);
+        } else {
+            String actualId = node.path(fieldName).asText();
+            Assert.assertEquals(fieldName + " should match in " + rootNodePath, expectedValue, actualId);
+        }
+    }
+
+    public void validateJsonNodeContains(JsonNode rootNode, String rootNodePath, String fieldName, List<String> expectedValues) {
+        JsonNode node = rootNode;
+
+        // Navigate through the JSON tree to the specified root node
+        for (String pathSegment : rootNodePath.split("\\.")) {
+            node = node.path(pathSegment);
+        }
+
+        if (node.isArray()) {
+            List<String> actualValues = new ArrayList<>();
+            for (JsonNode arrayElement : node) {
+                actualValues.add(arrayElement.path(fieldName).asText());
+            }
+            Assert.assertTrue("The list should contain all expected values", actualValues.containsAll(expectedValues));
+        } else {
+            String actualValue = node.path(fieldName).asText();
+            Assert.assertTrue("The field should contain the expected value", expectedValues.contains(actualValue));
+        }
+    }
+}
