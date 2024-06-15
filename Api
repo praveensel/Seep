@@ -1,28 +1,38 @@
-import io.restassured.http.ContentType;
-import io.restassured.response.Response;
+import io.cucumber.datatable.DataTable;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import static io.restassured.RestAssured.given;
+public class DataTableExample {
 
-public class ApiHandler {
+    public static void main(String[] args) {
+        // Initialize maps to represent each row
+        Map<String, String> row1 = new HashMap<>();
+        row1.put("username", "user1");
+        row1.put("password", "pass1");
 
-    // Common method to make API request
-    public static Response makeApiRequest(String endpoint, Map<String, Object> requestBody, Map<String, String> headers) {
-        // Make the API request using the provided endpoint, request body, and headers
-        return given()
-                .headers(headers)
-                .contentType(ContentType.JSON)
-                .body(requestBody)
-                .when()
-                .post(endpoint);
-    }
+        Map<String, String> row2 = new HashMap<>();
+        row2.put("username", "user2");
+        row2.put("password", "pass2");
 
-    // Common method to set headers
-    public static Map<String, String> getCommonHeaders() {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Trace-Id", "your-trace-id-value");
-        headers.put("Authorization", "your-authorization-token");
-        return headers;
+        Map<String, String> row3 = new HashMap<>();
+        row3.put("username", "user3");
+        row3.put("password", "pass3");
+
+        // Create a list of maps
+        List<Map<String, String>> data = new ArrayList<>();
+        data.add(row1);
+        data.add(row2);
+        data.add(row3);
+
+        // Create the DataTable
+        DataTable dataTable = DataTable.create(data);
+
+        // Use the DataTable (e.g., print it)
+        dataTable.asMaps(String.class, String.class).forEach(row ->
+            System.out.println("Username: " + row.get("username") + ", Password: " + row.get("password"))
+        );
     }
 }
