@@ -1,0 +1,14 @@
+let response = pm.response.json();
+pm.environment.set("orderNumber", response.orderNumber);
+
+const xml2js = require('xml2js');
+let response = pm.response.text();
+
+xml2js.parseString(response, (err, result) => {
+    if (err) {
+        console.error('Failed to parse XML:', err);
+    } else {
+        let workflowId = result.rootElement.workflowId[0];
+        pm.environment.set("workflowId", workflowId);
+    }
+});
