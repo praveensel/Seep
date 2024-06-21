@@ -1,34 +1,61 @@
-import io.cucumber.datatable.DataTable;
-import java.util.Arrays;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
+import java.util.Map.Entry;
 
-public class DataTableExample {
+public class JsonPathFinder {
 
-    public static void main(String[] args) {
-        // Assign values to variables
-        String username1 = "user1";
-        String password1 = "pass1";
-        String username2 = "user2";
-        String password2 = "pass2";
-        String username3 = "user3";
-        String password3 = "pass3";
+    // Public method to find paths of a given field name in the JSON structure
+    public static List<String> findFieldPaths(JsonNode rootNode, String fieldName) {
+        List<String> paths = new ArrayList<>();
+        // Initialize the recursive search
+        findFieldPathRecursive(rootNode, fieldName, "", paths);
+        return paths;
+    }
 
-        // Define the data as a list of lists (rows)
-        List<List<String>> data = Arrays.asList(
-            Arrays.asList("username", "password"),
-            Arrays.asList(username1, password1),
-            Arrays.asList(username2, password2),
-            Arrays.asList(username3, password3)
-        );
+    // Private recursive method to traverse the JSON tree and find field paths
+    private static void findFieldPathRecursive(JsonNode node, String fieldName, String currentPath, List<String> paths) {
+        if (node.isObject()) {
+            Iterator<Entry<String, JsonNode>> fields = node.fields();
+            while (fields.hasNext()) {
+                Entry<String, JsonNode> field = fields.next();
+                String fieldKey = field.getKey();
+                JsonNode fieldValue = field.getValue();
+                String newPath = currentPath.isEmpty() ? fieldKey : currentPath + "." + fieldKey;
 
-        // Create the DataTable
-        DataTable dataTable = DataTable.create(data);
+                if (fieldKey.equals(fieldName)) {
+                    paths.add(newPath);
+                }
 
-        // Use the DataTable (e.g., print it)
-        List<Map<String, String>> asMaps = dataTable.asMaps(String.class, String.class);
-        for (Map<String, String> row : asMaps) {
-            System.out.println("Username: " + row.get("username") + ", Password: " + row.get("password"));
+                // Continue the recursive search in the child node
+                findFieldPathRecursive(fieldValue, fieldName, newPath, paths);
+            }
+        } else if (node.isArray()) {
+            for (int i = 0; i < node.size(); i++) {
+                JsonNode arrayElement = node.get(i);
+                String newPath = currentPath + "[" + i + "]";
+                // Continue the recursive search in the array element
+                findFieldPathRecursive(arrayElement, fieldName, newPath, paths);
+            }
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        String jsonString = 
+                " ";
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(jsonString);
+
+        String fieldName = "columns";
+        List<String> paths = JsonPathFinder.findFieldPaths(rootNode, fieldName);
+
+        for (String path : paths) {
+            System.out.println("Path to field '" + fieldName + "': " + path);
         }
     }
 }
