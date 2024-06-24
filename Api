@@ -44,26 +44,7 @@ public class JsonPathUpdater {
 
     public static void main(String[] args) throws JSONException {
         // Example JSON string
-        String jsonString = "{\n" +
-                "  \"meta\": {\n" +
-                "    \"offset\": 0,\n" +
-                "    \"limit\": 100,\n" +
-                "    \"sortBy\": []\n" +
-                "  },\n" +
-                "  \"principal\": {\n" +
-                "    \"attributes\": [\n" +
-                "      {\n" +
-                "        \"name\": \"string\",\n" +
-                "        \"status\": \"string\",\n" +
-                "        \"type\": \"string\",\n" +
-                "        \"value\": {\n" +
-                "          \"columns\": \"MU_USER_ID, USER_FIRS\"\n" +
-                "        }\n" +
-                "      }\n" +
-                "    ]\n" +
-                "  },\n" +
-                "  \"parentId\": \"companyid\"\n" +
-                "}";
+        String jsonString =   "}";
 
         // Parse JSON string to JSONObject
         JSONObject rootNode = new JSONObject(jsonString);
