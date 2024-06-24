@@ -1,61 +1,83 @@
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map.Entry;
+public class JsonPathUpdater {
 
-public class JsonPathFinder {
+    public static void setValueByPath(JSONObject rootNode, String path, Object value) throws JSONException {
+        String[] pathComponents = path.split("\\.");
+        JSONObject currentNode = rootNode;
 
-    // Public method to find paths of a given field name in the JSON structure
-    public static List<String> findFieldPaths(JsonNode rootNode, String fieldName) {
-        List<String> paths = new ArrayList<>();
-        // Initialize the recursive search
-        findFieldPathRecursive(rootNode, fieldName, "", paths);
-        return paths;
-    }
+        for (int i = 0; i < pathComponents.length; i++) {
+            String component = pathComponents[i];
 
-    // Private recursive method to traverse the JSON tree and find field paths
-    private static void findFieldPathRecursive(JsonNode node, String fieldName, String currentPath, List<String> paths) {
-        if (node.isObject()) {
-            Iterator<Entry<String, JsonNode>> fields = node.fields();
-            while (fields.hasNext()) {
-                Entry<String, JsonNode> field = fields.next();
-                String fieldKey = field.getKey();
-                JsonNode fieldValue = field.getValue();
-                String newPath = currentPath.isEmpty() ? fieldKey : currentPath + "." + fieldKey;
+            if (component.contains("[")) {
+                String arrayField = component.substring(0, component.indexOf('['));
+                int arrayIndex = Integer.parseInt(component.substring(component.indexOf('[') + 1, component.indexOf(']')));
 
-                if (fieldKey.equals(fieldName)) {
-                    paths.add(newPath);
+                JSONArray arrayNode = currentNode.optJSONArray(arrayField);
+                if (arrayNode == null) {
+                    arrayNode = new JSONArray();
+                    currentNode.put(arrayField, arrayNode);
                 }
 
-                // Continue the recursive search in the child node
-                findFieldPathRecursive(fieldValue, fieldName, newPath, paths);
-            }
-        } else if (node.isArray()) {
-            for (int i = 0; i < node.size(); i++) {
-                JsonNode arrayElement = node.get(i);
-                String newPath = currentPath + "[" + i + "]";
-                // Continue the recursive search in the array element
-                findFieldPathRecursive(arrayElement, fieldName, newPath, paths);
+                if (i == pathComponents.length - 1) {
+                    arrayNode.put(arrayIndex, value);
+                } else {
+                    if (arrayNode.isNull(arrayIndex) || !(arrayNode.get(arrayIndex) instanceof JSONObject)) {
+                        arrayNode.put(arrayIndex, new JSONObject());
+                    }
+                    currentNode = arrayNode.getJSONObject(arrayIndex);
+                }
+            } else {
+                if (i == pathComponents.length - 1) {
+                    currentNode.put(component, value);
+                } else {
+                    if (!currentNode.has(component) || !(currentNode.get(component) instanceof JSONObject)) {
+                        currentNode.put(component, new JSONObject());
+                    }
+                    currentNode = currentNode.getJSONObject(component);
+                }
             }
         }
     }
 
-    public static void main(String[] args) throws IOException {
-        String jsonString = 
-                " ";
+    public static void main(String[] args) throws JSONException {
+        // Example JSON string
+        String jsonString = "{\n" +
+                "  \"meta\": {\n" +
+                "    \"offset\": 0,\n" +
+                "    \"limit\": 100,\n" +
+                "    \"sortBy\": []\n" +
+                "  },\n" +
+                "  \"principal\": {\n" +
+                "    \"attributes\": [\n" +
+                "      {\n" +
+                "        \"name\": \"string\",\n" +
+                "        \"status\": \"string\",\n" +
+                "        \"type\": \"string\",\n" +
+                "        \"value\": {\n" +
+                "          \"columns\": \"MU_USER_ID, USER_FIRS\"\n" +
+                "        }\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  },\n" +
+                "  \"parentId\": \"companyid\"\n" +
+                "}";
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode rootNode = objectMapper.readTree(jsonString);
+        // Parse JSON string to JSONObject
+        JSONObject rootNode = new JSONObject(jsonString);
 
-        String fieldName = "columns";
-        List<String> paths = JsonPathFinder.findFieldPaths(rootNode, fieldName);
+        // Path to the field where we want to set the new value
+        String path = "principal.attributes[0].value.columns";
 
-        for (String path : paths) {
-            System.out.println("Path to field '" + fieldName + "': " + path);
-        }
+        // New value to set
+        String newValue = "NEW_COLUMN_VALUE";
+
+        // Set the value in the JSON object at the specified path
+        setValueByPath(rootNode, path, newValue);
+
+        // Print the updated JSON object
+        System.out.println(rootNode.toString(2));
     }
 }
