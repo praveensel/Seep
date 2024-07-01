@@ -49,3 +49,96 @@ Certainly! Here are 10 more advanced Java Selenium interview questions with answ
 15. **How do you handle SSL certificate errors in Selenium WebDriver?**
 
     SSL certificate errors can be bypassed in Selenium WebDriver by configuring the browser to accept insecure certificates. In Chrome, you can set the `--ignore-certificate-errors` flag, while in Firefox, you can set the `acceptInsecureCerts` capability to `true` in the WebDriver options. However, it's important to use this with caution, especially in production environments.
+
+Absolutely, here are 30 Java interview questions for someone with 5 years of experience in testing, covering a range of topics from core Java to advanced testing practices.
+
+### Core Java Questions
+
+1. **Explain the difference between `HashMap` and `Hashtable`.**
+   - `HashMap` is not synchronized and allows one null key and multiple null values. `Hashtable` is synchronized and doesn't allow any null key or value.
+
+2. **What is the difference between `==` and `equals()` in Java?**
+   - `==` checks for reference equality (whether both references point to the same object), while `equals()` checks for value equality (whether the values of the objects are the same).
+
+3. **What is the purpose of the `final` keyword in Java?**
+   - `final` can be used with classes, methods, and variables. When used with a class, it prevents inheritance. When used with a method, it prevents overriding. When used with a variable, it makes it a constant.
+
+4. **Explain the concept of exception handling in Java.**
+   - Exception handling in Java is managed using `try`, `catch`, `finally`, and `throw`/`throws`. `try` block contains code that might throw an exception, `catch` block handles the exception, `finally` block contains code that executes regardless of whether an exception occurred, and `throw`/`throws` are used to explicitly throw exceptions.
+
+5. **What are the main differences between `ArrayList` and `LinkedList`?**
+   - `ArrayList` is backed by a dynamic array, which provides fast random access but slow insertions and deletions. `LinkedList` is backed by a doubly-linked list, which provides fast insertions and deletions but slower random access.
+
+6. **Explain the difference between `Abstract` class and `Interface` in Java.**
+   - An abstract class can have both abstract methods (without body) and concrete methods (with body). Interfaces can only have abstract methods (prior to Java 8), but from Java 8 onwards, interfaces can have default and static methods as well. Abstract classes can have state (fields), while interfaces cannot.
+
+7. **What is the difference between `Checked` and `Unchecked` exceptions?**
+   - Checked exceptions are checked at compile-time, and the method must handle or declare them using `throws`. Unchecked exceptions are checked at runtime and are subclasses of `RuntimeException`.
+
+8. **What is a Java `Stream` and how does it differ from a collection?**
+   - A `Stream` represents a sequence of elements supporting sequential and parallel aggregate operations. Unlike collections, streams do not store elements; they convey elements from a source through a pipeline of computational operations.
+
+9. **Describe the `Singleton` design pattern and how to implement it in Java.**
+   - The Singleton pattern ensures that a class has only one instance and provides a global point of access to it. It can be implemented using a private constructor, a static method to get the instance, and a private static variable holding the instance.
+
+10. **Explain the use of the `volatile` keyword in Java.**
+    - The `volatile` keyword ensures that the value of a variable is always read from the main memory, and writes to the variable are always written to the main memory. This prevents threads from caching the variable locally, which is useful in multi-threaded environments.
+
+### Java Testing-Specific Questions
+
+11. **What is the difference between functional and non-functional testing?**
+    - Functional testing focuses on verifying that the software performs its intended functions correctly (e.g., unit testing, integration testing). Non-functional testing focuses on aspects such as performance, usability, reliability, etc. (e.g., load testing, stress testing).
+
+12. **Explain what a test automation framework is and mention some popular frameworks.**
+    - A test automation framework is a set of guidelines, tools, and practices for creating and executing automated tests efficiently. Popular frameworks include Selenium, JUnit, TestNG, Cucumber, and Appium.
+
+13. **How do you handle synchronization issues in Selenium?**
+    - Synchronization issues in Selenium can be handled using implicit waits, explicit waits, and fluent waits. Implicit waits set a default wait time for the entire driver instance. Explicit waits wait for a specific condition to occur before proceeding. Fluent waits allow setting the polling frequency and ignoring specific exceptions.
+
+14. **Describe the Page Object Model (POM) design pattern in Selenium.**
+    - POM is a design pattern that promotes the separation of test scripts from the page-specific code. Each web page is represented by a corresponding page object class, which contains the elements and actions related to that page. This improves code maintainability and readability.
+
+15. **What is continuous integration (CI) and how does it relate to testing?**
+    - CI is a practice where developers frequently integrate their code changes into a shared repository, followed by automated builds and tests. It helps in early detection of integration issues, ensuring that the codebase is always in a releasable state. Testing is an integral part of CI, as it ensures that the integrated changes do not break existing functionality.
+
+16. **What are some common challenges faced in test automation and how do you overcome them?**
+    - Common challenges include handling dynamic web elements, dealing with browser compatibility, maintaining test scripts, and handling pop-ups or alerts. These can be overcome using strategies like using robust locators, leveraging cross-browser testing tools, designing maintainable test scripts, and using appropriate wait mechanisms.
+
+17. **Describe the role of Maven or Gradle in your testing projects.**
+    - Maven and Gradle are build automation tools that help in managing project dependencies, building and packaging the code, and running tests. They streamline the build process, ensure consistent environments, and integrate with CI tools for automated testing and deployment.
+
+18. **How do you manage test data in your automation tests?**
+    - Test data can be managed using external files (CSV, Excel, JSON), databases, or data providers (like TestNG’s `@DataProvider`). Using external test data sources helps in separating test logic from test data, making tests more maintainable and scalable.
+
+19. **What is the significance of the `@BeforeClass` and `@AfterClass` annotations in JUnit/TestNG?**
+    - `@BeforeClass` (JUnit) or `@BeforeSuite` (TestNG) methods run once before any of the test methods in the class/suite. `@AfterClass` (JUnit) or `@AfterSuite` (TestNG) methods run once after all the test methods have run. They are typically used for setup and teardown tasks that are expensive or need to be done only once, like opening a database connection or starting a server.
+
+20. **Can you explain the concept of mocks and stubs in unit testing?**
+    - Mocks and stubs are used to isolate the unit being tested by simulating the behavior of dependencies. A stub is a simplified implementation that returns predefined results, while a mock is a more complex object that can verify interactions, such as method calls and parameters.
+
+21. **What is test coverage and how do you measure it?**
+    - Test coverage is a metric that measures the extent to which the code is exercised by tests. It is typically measured using code coverage tools like JaCoCo or Cobertura, which report metrics such as line coverage, branch coverage, and method coverage.
+
+22. **Explain the concept of `Assertions` in testing.**
+    - Assertions are used in tests to verify that the actual outcome matches the expected outcome. Common assertion methods include `assertEquals`, `assertTrue`, `assertFalse`, and `assertNotNull`. They help in validating the correctness of the code under test.
+
+23. **Describe how you would test a RESTful API.**
+    - Testing a RESTful API involves validating the HTTP methods (GET, POST, PUT, DELETE), status codes, response payloads, headers, authentication, and error messages. Tools like Postman, RestAssured (Java library), and JMeter can be used to automate and validate API tests.
+
+24. **What is Selenium Grid and how do you use it?**
+    - Selenium Grid is a tool that allows running tests on different machines and browsers in parallel. It consists of a hub (central point that receives test requests) and nodes (machines that execute tests). It is used to speed up test execution and ensure cross-browser compatibility.
+
+25. **Explain the difference between Selenium WebDriver and Selenium RC.**
+    - Selenium WebDriver is a tool for automating web applications, providing a more direct and efficient way to control browser actions compared to Selenium RC, which is an older tool that required a server to act as an intermediary between the test code and the browser.
+
+26. **How do you handle file uploads and downloads in Selenium?**
+    - For file uploads, you can use the `sendKeys` method to set the file path on the file input element. For file downloads, you can configure the browser’s download settings to handle the download process and verify the downloaded file’s existence and content.
+
+27. **What is the use of the `expected_conditions` module in Selenium?**
+    - The `expected_conditions` module in Selenium provides a set of predefined conditions to use with explicit waits. These conditions help to wait for specific events to occur, such as an element becoming visible, clickable, or present in the DOM.
+
+28. **Describe the use of `DataProvider` in TestNG.**
+    - `DataProvider` in TestNG is used to create data-driven tests. It allows the same test method to be executed multiple times with different sets of data. The `DataProvider` method returns an array of objects, and the test method receives these objects as parameters.
+
+29. **Explain the role of `WebDriverWait` in Selenium.**
+    - `WebDriverWait` in Selenium is used to
