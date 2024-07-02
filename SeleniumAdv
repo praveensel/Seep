@@ -1,0 +1,99 @@
+Certainly! Here are 30 Selenium interview questions ranging from basic to advanced levels:
+
+### Basic Selenium Questions
+
+1. **What is Selenium?**
+   - Selenium is an open-source tool for automating web browser interactions. It supports multiple browsers and platforms.
+
+2. **What are the different components of Selenium?**
+   - Selenium IDE, Selenium RC (now deprecated), Selenium WebDriver, and Selenium Grid.
+
+3. **What is Selenium WebDriver?**
+   - Selenium WebDriver is a tool for automating web application testing, enabling direct control over the browser.
+
+4. **How do you locate elements in Selenium?**
+   - Using locators like ID, Name, Class Name, Tag Name, Link Text, Partial Link Text, CSS Selector, and XPath.
+
+5. **What is the difference between `findElement` and `findElements`?**
+   - `findElement` returns a single WebElement, while `findElements` returns a list of WebElements.
+
+6. **How do you handle browser alerts in Selenium?**
+   - Using the `Alert` interface with methods like `accept()`, `dismiss()`, `getText()`, and `sendKeys()`.
+
+7. **How do you handle frames in Selenium?**
+   - By using methods such as `switchTo().frame()`, `switchTo().defaultContent()`, and `switchTo().parentFrame()`.
+
+8. **What is the difference between `getWindowHandle()` and `getWindowHandles()`?**
+   - `getWindowHandle()` returns the current window handle, while `getWindowHandles()` returns a set of all window handles.
+
+9. **How do you handle dropdowns in Selenium?**
+   - Using the `Select` class with methods like `selectByVisibleText()`, `selectByIndex()`, and `selectByValue()`.
+
+10. **What is an implicit wait in Selenium?**
+    - An implicit wait tells the WebDriver to wait for a certain amount of time before throwing a `NoSuchElementException`.
+
+### Intermediate Selenium Questions
+
+11. **What is an explicit wait in Selenium?**
+    - An explicit wait allows you to wait for a certain condition to occur before proceeding, using `WebDriverWait` and `ExpectedConditions`.
+
+12. **What is a fluent wait in Selenium?**
+    - A fluent wait defines the maximum amount of time to wait for a condition, as well as the frequency with which to check the condition, and ignores specific exceptions.
+
+13. **How do you handle multiple windows in Selenium?**
+    - By using `getWindowHandles()` to get all window handles and switching to the desired window using `switchTo().window()`.
+
+14. **Explain the Page Object Model (POM) design pattern.**
+    - POM promotes the separation of test code and page-specific code by creating a class for each web page, containing methods that interact with the page's elements.
+
+15. **How do you capture a screenshot in Selenium?**
+    - Using the `TakesScreenshot` interface with the `getScreenshotAs` method.
+
+16. **What is Selenium Grid and how do you use it?**
+    - Selenium Grid allows running tests on multiple machines and browsers in parallel. It consists of a hub and nodes.
+
+17. **How do you handle cookies in Selenium?**
+    - Using methods like `getCookies()`, `addCookie()`, `deleteCookie()`, and `deleteAllCookies()`.
+
+18. **What is the difference between `driver.close()` and `driver.quit()`?**
+    - `driver.close()` closes the current browser window, while `driver.quit()` closes all browser windows and ends the WebDriver session.
+
+19. **How do you perform drag-and-drop in Selenium?**
+    - Using the `Actions` class with methods like `clickAndHold()`, `moveToElement()`, and `release()`.
+
+20. **How do you handle AJAX calls in Selenium?**
+    - By using explicit waits to wait for the expected condition, such as the presence of an element or the invisibility of a loading indicator.
+
+### Advanced Selenium Questions
+
+21. **What are the advantages and disadvantages of Selenium?**
+    - Advantages: Open-source, supports multiple browsers and platforms, integrates with various tools. Disadvantages: Limited support for desktop applications, requires programming knowledge, can be challenging to set up and maintain.
+
+22. **How do you manage dynamic elements in Selenium?**
+    - By using dynamic XPath or CSS selectors, explicit waits, and robust locator strategies.
+
+23. **How do you handle SSL certificate errors in Selenium?**
+    - By setting desired capabilities or browser options to accept SSL certificates.
+
+24. **What is the purpose of the `DesiredCapabilities` class in Selenium?**
+    - `DesiredCapabilities` is used to set browser-specific capabilities and configurations, such as enabling browser logs or setting proxy settings.
+
+25. **How do you execute JavaScript in Selenium?**
+    - Using the `JavascriptExecutor` interface with methods like `executeScript()` and `executeAsyncScript()`.
+
+26. **Explain the use of `TestNG` in Selenium.**
+    - `TestNG` is a testing framework that provides annotations, parallel test execution, dependency testing, and powerful reporting features.
+
+27. **What is a `WebDriverEventListener` and how do you use it?**
+    - `WebDriverEventListener` is an interface that allows you to listen to WebDriver events, such as before and after finding an element or clicking an element. It is used to implement custom logging and reporting.
+
+28. **How do you handle file uploads in Selenium?**
+    - By using the `sendKeys()` method to set the file path on the file input element.
+
+29. **How do you handle file downloads in Selenium?**
+    - By configuring the browser's download settings and verifying the downloaded file's existence and content.
+
+30. **What are the common exceptions in Selenium WebDriver and how do you handle them?**
+    - Common exceptions include `NoSuchElementException`, `StaleElementReferenceException`, `TimeoutException`, and `ElementNotInteractableException`. These can be handled using appropriate waits, try-catch blocks, and robust locators.
+
+These questions cover a broad range of topics and should help prepare for various aspects of Selenium interviews.
