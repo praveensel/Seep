@@ -19,14 +19,10 @@ If you're encountering an error while fetching the token, it can be helpful to a
            const response = await fetch(tokenUrl, {
                method: 'POST',
                headers: {
-                   'Content-Type': 'application/x-www-form-urlencoded'
-               },
-               body: new URLSearchParams({
-                   'grant_type': 'client_credentials',
-                   'client_id': clientId,
-                   'client_secret': clientSecret
-               })
-           });
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `grant_type=client_credentials&client_id=${encodeURIComponent(clientId)}&client_secret=${encodeURIComponent(clientSecret)}`
+        });
 
            // Log the status code and response
            console.log('Response status:', response.status);
