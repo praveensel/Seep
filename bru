@@ -1,33 +1,86 @@
-// Fetch the environment variables
-const clientId = bruno.getEnvironmentVariable('CLIENT_ID');
-const clientSecret = bruno.getEnvironmentVariable('CLIENT_SECRET');
-const tokenUrl = bruno.getEnvironmentVariable('TOKEN_URL');
+If you're encountering an error while fetching the token, it can be helpful to add some debugging steps to understand what might be going wrong. Here’s how you can modify the script to include more detailed logging and ensure all parts of the request are correctly handled:
 
-// Function to get the bearer token
-async function getBearerToken() {
-    const response = await fetch(tokenUrl, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: new URLSearchParams({
-            'grant_type': 'client_credentials',
-            'client_id': clientId,
-            'client_secret': clientSecret
-        })
-    });
+### Enhanced Pre-request Script with Debugging
 
-    if (!response.ok) {
-        throw new Error(`Token request failed with status ${response.status}`);
-    }
+1. **Add Debugging Statements**
 
-    const data = await response.json();
-    return data.access_token;
-}
+   Modify the script to log responses and potential errors:
 
-// Execute the function and set the token in the environment variable
-getBearerToken().then(token => {
-    bruno.setEnvironmentVariable('BEARER_TOKEN', token);
-}).catch(error => {
-    console.error('Error fetching token:', error);
-});
+   ```javascript
+   // Fetch the environment variables
+   const clientId = bruno.getEnvironmentVariable('CLIENT_ID');
+   const clientSecret = bruno.getEnvironmentVariable('CLIENT_SECRET');
+   const tokenUrl = bruno.getEnvironmentVariable('TOKEN_URL');
+
+   // Function to get the bearer token
+   async function getBearerToken() {
+       try {
+           console.log('Requesting token from:', tokenUrl);
+           const response = await fetch(tokenUrl, {
+               method: 'POST',
+               headers: {
+                   'Content-Type': 'application/x-www-form-urlencoded'
+               },
+               body: new URLSearchParams({
+                   'grant_type': 'client_credentials',
+                   'client_id': clientId,
+                   'client_secret': clientSecret
+               })
+           });
+
+           // Log the status code and response
+           console.log('Response status:', response.status);
+           console.log('Response status text:', response.statusText);
+
+           if (!response.ok) {
+               const errorText = await response.text();
+               throw new Error(`Token request failed with status ${response.status}: ${response.statusText} - ${errorText}`);
+           }
+
+           const data = await response.json();
+           console.log('Token response data:', data);
+           return data.access_token;
+
+       } catch (error) {
+           console.error('Error fetching token:', error);
+           throw error;
+       }
+   }
+
+   // Execute the function and set the token in the environment variable
+   getBearerToken().then(token => {
+       console.log('Fetched token:', token);
+       bruno.setEnvironmentVariable('BEARER_TOKEN', token);
+   }).catch(error => {
+       console.error('Failed to set token:', error);
+   });
+   ```
+
+### Additional Steps
+
+1. **Ensure Environment Variables Are Correct**
+   - Double-check that the `CLIENT_ID`, `CLIENT_SECRET`, and `TOKEN_URL` are correctly set in the environment variables in Bruno.
+
+2. **Check API Documentation**
+   - Verify the token endpoint URL and the required parameters according to the Bruno app’s API documentation. Ensure the `grant_type`, `client_id`, and `client_secret` are correctly formatted.
+
+3. **Review Network Requests**
+   - Use browser developer tools or network monitoring tools to inspect the actual request being sent and the response received.
+
+### Running the Script
+
+1. **Execute the API Request**
+   - After adding the script and setting the environment variables, run the API request to see the console logs for detailed information.
+
+2. **Analyze Console Logs**
+   - Review the console output for any logged messages. This will help you understand the status of the token request and identify any issues.
+
+### Example Console Output Analysis
+
+- **Requesting token from**: This confirms the URL being used.
+- **Response status**: Shows the HTTP status code of the response.
+- **Response status text**: Provides additional context on the status code.
+- **Token response data**: Displays the response data if the request is successful.
+- **Error fetching token**: Logs detailed error information if the request fails.
+
+By enhancing the script with detailed logging, you can better diagnose and resolve any issues with fetching the token.
