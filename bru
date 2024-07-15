@@ -1,10 +1,4 @@
-If you're encountering an error while fetching the token, it can be helpful to add some debugging steps to understand what might be going wrong. Here’s how you can modify the script to include more detailed logging and ensure all parts of the request are correctly handled:
-
-### Enhanced Pre-request Script with Debugging
-
-1. **Add Debugging Statements**
-
-   Modify the script to log responses and potential errors:
+If you're encountering an error while fetching the token, it can be helpful to add some debugging steps to understand what might be going wrong. Here’s how you can modify the script to include more detailed log
 
    ```javascript
    // Fetch the environment variables
@@ -80,3 +74,24 @@ If you're encountering an error while fetching the token, it can be helpful to a
 - **Error fetching token**: Logs detailed error information if the request fails.
 
 By enhancing the script with detailed logging, you can better diagnose and resolve any issues with fetching the token.
+
+To generate a random string in the format `RRR-######-RRR-######-###############` in the Bruno app, you can use the following JavaScript code:
+
+```javascript
+function generateRandomNumber(length) {
+    return Math.random().toString().substr(2, length);
+}
+
+const part1 = "RRR";
+const part2 = generateRandomNumber(6);
+const part3 = "RRR";
+const part4 = generateRandomNumber(6);
+const part5 = generateRandomNumber(15);
+
+const generatedString = `${part1}-${part2}-${part3}-${part4}-${part5}`;
+
+// Assuming Bruno app has a similar method to set environment variables
+setEnvironmentVariable("generatedString", generatedString);
+```
+
+Replace `setEnvironmentVariable` with the actual method Bruno app uses to set environment variables or to store data. This script generates random numeric strings of the specified lengths and concatenates them with the static parts ("RRR") to form the desired format.
