@@ -1,64 +1,261 @@
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-public class JsonPathUpdater {
 
-    public static void setValueByPath(JSONObject rootNode, String path, Object value) throws JSONException {
-        String[] pathComponents = path.split("\\.");
-        JSONObject currentNode = rootNode;
 
-        for (int i = 0; i < pathComponents.length; i++) {
-            String component = pathComponents[i];
+---
 
-            if (component.contains("[")) {
-                String arrayField = component.substring(0, component.indexOf('['));
-                int arrayIndex = Integer.parseInt(component.substring(component.indexOf('[') + 1, component.indexOf(']')));
+Field: userID
 
-                JSONArray arrayNode = currentNode.optJSONArray(arrayField);
-                if (arrayNode == null) {
-                    arrayNode = new JSONArray();
-                    currentNode.put(arrayField, arrayNode);
-                }
+1. Test Case: userID is Required
 
-                if (i == pathComponents.length - 1) {
-                    arrayNode.put(arrayIndex, value);
-                } else {
-                    if (arrayNode.isNull(arrayIndex) || !(arrayNode.get(arrayIndex) instanceof JSONObject)) {
-                        arrayNode.put(arrayIndex, new JSONObject());
-                    }
-                    currentNode = arrayNode.getJSONObject(arrayIndex);
-                }
-            } else {
-                if (i == pathComponents.length - 1) {
-                    currentNode.put(component, value);
-                } else {
-                    if (!currentNode.has(component) || !(currentNode.get(component) instanceof JSONObject)) {
-                        currentNode.put(component, new JSONObject());
-                    }
-                    currentNode = currentNode.getJSONObject(component);
-                }
-            }
-        }
-    }
+Description: Verify that userID is a required field.
 
-    public static void main(String[] args) throws JSONException {
-        // Example JSON string
-        String jsonString =   "}";
+Expected Result: The system should reject if userID is empty.
 
-        // Parse JSON string to JSONObject
-        JSONObject rootNode = new JSONObject(jsonString);
 
-        // Path to the field where we want to set the new value
-        String path = "principal.attributes[0].value.columns";
 
-        // New value to set
-        String newValue = "NEW_COLUMN_VALUE";
+2. Test Case: Alphanumeric Validation for userID
 
-        // Set the value in the JSON object at the specified path
-        setValueByPath(rootNode, path, newValue);
+Description: Verify that userID only accepts alphanumeric characters.
 
-        // Print the updated JSON object
-        System.out.println(rootNode.toString(2));
-    }
-}
+Sample Valid Input: test123
+
+Sample Invalid Input: test@123
+
+Expected Result: The system should reject userID if it contains non-alphanumeric characters.
+
+
+
+3. Test Case: Minimum Length for userID
+
+Description: Verify that userID accepts a minimum of 3 characters.
+
+Sample Valid Input: abc
+
+Expected Result: The system should accept userID with 3 characters.
+
+
+
+4. Test Case: Maximum Length for userID
+
+Description: Verify that userID accepts a maximum of 11 characters.
+
+Sample Valid Input: user123456
+
+Expected Result: The system should accept userID with up to 11 characters.
+
+
+
+
+
+---
+
+Field: standardId
+
+1. Test Case: Alphanumeric Validation for standardId
+
+Description: Verify that standardId only accepts alphanumeric characters.
+
+Sample Valid Input: zkpname
+
+Sample Invalid Input: zkp$name
+
+Expected Result: The system should reject standardId if it contains non-alphanumeric characters.
+
+
+
+
+
+---
+
+Field: addressLn1, addressLn2, addressLn3
+
+1. Test Case: Alphanumeric Validation for addressLn1/2/3
+
+Description: Verify that addressLn1, addressLn2, and addressLn3 only accept alphanumeric characters.
+
+Sample Valid Input: 123 Main St
+
+Sample Invalid Input: 123 Main St!
+
+Expected Result: The system should reject these fields if they contain non-alphanumeric characters.
+
+
+
+2. Test Case: Maximum Length for addressLn1/2/3
+
+Description: Verify that addressLn1, addressLn2, and addressLn3 accept a maximum of 40 characters.
+
+Sample Valid Input: 1234 Elm Street Apartment 56, City Name
+
+Expected Result: The system should accept input up to 40 characters.
+
+
+
+
+
+---
+
+Field: city
+
+1. Test Case: Alphabet Validation for city
+
+Description: Verify that city only accepts alphabetic characters and spaces, with no special characters.
+
+Sample Valid Input: San Luis Obispo
+
+Sample Invalid Input: San Luis Obispo!
+
+Expected Result: The system should reject city if it contains special characters.
+
+
+
+
+
+---
+
+Field: state
+
+1. Test Case: Alphabet Validation for state
+
+Description: Verify that state only accepts alphabetic characters and spaces, with no special characters.
+
+Sample Valid Input: California
+
+Sample Invalid Input: California@
+
+Expected Result: The system should reject state if it contains special characters.
+
+
+
+
+
+---
+
+Field: zip
+
+1. Test Case: Numeric Validation for zip
+
+Description: Verify that zip only accepts numeric characters.
+
+Sample Valid Input: 94538123
+
+Sample Invalid Input: 94538-123
+
+Expected Result: The system should reject zip if it contains non-numeric characters.
+
+
+
+
+
+---
+
+Field: country
+
+1. Test Case: Numeric Validation for country
+
+Description: Verify that country only accepts numeric characters.
+
+Sample Valid Input: 1
+
+Sample Invalid Input: US
+
+Expected Result: The system should reject country if it contains non-numeric characters.
+
+
+
+
+
+---
+
+Field: firstName
+
+1. Test Case: Alphabet Validation for firstName
+
+Description: Verify that firstName only accepts alphabetic characters.
+
+Sample Valid Input: James
+
+Sample Invalid Input: James1
+
+Expected Result: The system should reject firstName if it contains non-alphabetic characters.
+
+
+
+
+
+---
+
+Field: mobile
+
+1. Test Case: 10-Digit Numeric Validation for mobile
+
+Description: Verify that mobile only accepts exactly 10 digits.
+
+Sample Valid Input: 8599490030
+
+Sample Invalid Input: 859-949-0030
+
+Expected Result: The system should reject mobile if it contains non-numeric characters or if it is not exactly 10 digits.
+
+
+
+
+
+---
+
+Field: phone
+
+1. Test Case: Numeric and Hyphen Validation for phone
+
+Description: Verify that phone accepts numbers and only contains numbers and hyphens.
+
+Sample Valid Input: 212-252-5443
+
+Sample Invalid Input: 212-252-5443@
+
+Expected Result: The system should reject phone if it contains characters other than numbers and hyphens.
+
+
+
+
+
+---
+
+Field: phoneCountryCode
+
+1. Test Case: Alpha Validation for phoneCountryCode
+
+Description: Verify that phoneCountryCode only accepts alpha characters.
+
+Sample Valid Input: US
+
+Sample Invalid Input: U$
+
+Expected Result: The system should reject phoneCountryCode if it contains non-alpha characters.
+
+
+
+
+
+---
+
+Field: email
+
+1. Test Case: Email Format Validation
+
+Description: Verify that email accepts a standard email format.
+
+Sample Valid Input: test1@test.com
+
+Sample Invalid Input: test1@@test.com
+
+Expected Result: The system should reject email if it does not contain one @ symbol and at least one character before and after it.
+
+
+
+
+
+---
+
+
+
